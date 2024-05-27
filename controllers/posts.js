@@ -15,6 +15,27 @@ const index = (req,res) => {
     res.send(html);
 }
 
+const show = (req, res) => {
+    const param =  req.params.slug;
+    
+    const targetPost = postsList.find(post => post.slug === param);
+
+    if(targetPost){
+        const {title, content, image, tags} = targetPost;
+        res.send(`
+            <h1>${title}</h1>
+            <p>${content}</p>
+            <img width="200" src="/imgs/posts/${image}" alt="${title}">
+            <div>
+                ${tags.map(tag => `<span>${tag}</span>`).join(' - ')}
+            </div>
+        `)
+    }else{
+        res.status(404).send('Post not found')   
+    }
+}
+
 module.exports = {
     index,
+    show
 }
