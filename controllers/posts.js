@@ -13,6 +13,9 @@ const index = (req,res) => {
                         <h2>${p.title}</h2>
                         <p>${p.content}</p>
                         <img width="200" src="./imgs/posts/${p.image}" alt="${p.title}">
+                        <div>
+                        ${p.tags.map(tag => `<span>${tag}</span>`).join(' - ')}
+                        </div>
                     </a>
                 </li>`
     });

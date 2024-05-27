@@ -1,5 +1,6 @@
 const showLink = (req, element) => {
-    return `http://${req.headers.host}/posts/${element.toLowerCase()}`;
+    const elementPath = element.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
+    return `http://${req.headers.host}/posts/${elementPath}`;
 }
 
 module.exports = {
