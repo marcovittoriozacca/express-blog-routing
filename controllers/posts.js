@@ -20,7 +20,7 @@ const index = (req,res) => {
 const show = (req, res) => {
     const param =  req.params.slug;
     
-    const targetPost = postsList.find(post => post.slug === param);
+    let targetPost = postsList.find(post => post.slug === param);
     res.format({
         html: () => {
             if(targetPost){
@@ -39,6 +39,7 @@ const show = (req, res) => {
         },
         json: () => {
             if(targetPost){
+                targetPost.image_url = `${req.headers.host}/imgs/posts/${targetPost.image}`;
                 res.json(targetPost);
             }else{
                 res.status(404).json({
