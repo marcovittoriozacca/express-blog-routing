@@ -40,6 +40,7 @@ const show = (req, res) => {
         json: () => {
             if(targetPost){
                 targetPost.image_url = `${req.headers.host}/imgs/posts/${targetPost.image}`;
+                targetPost.image_download_link = `${req.headers.host}/posts/${param}/download`;
                 res.json(targetPost);
             }else{
                 res.status(404).json({
