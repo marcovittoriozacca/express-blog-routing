@@ -1,6 +1,7 @@
 const postsList = require('../database/db.js');
 const path = require('path');
 const fs = require('fs');
+const {showLink} = require('../utils.js');
 //index controller for the route /posts
 const index = (req,res) => {
     let html;
@@ -8,9 +9,11 @@ const index = (req,res) => {
     html = `<ul>`;
     postsList.forEach(p => { 
         html+= `<li>
-                    <h2>${p.title}</h2>
-                    <p>${p.content}</p>
-                    <img width="200" src="./imgs/posts/${p.image}" alt="${p.title}">
+                    <a style="text-decoration:none" href="${showLink(req, p.title)}">
+                        <h2>${p.title}</h2>
+                        <p>${p.content}</p>
+                        <img width="200" src="./imgs/posts/${p.image}" alt="${p.title}">
+                    </a>
                 </li>`
     });
     html += `</ul>`;
