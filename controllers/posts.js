@@ -7,20 +7,25 @@ const {showLink, getTemplate} = require('../utils.js');
 let html = getTemplate('template');
 
 const index = (req,res) => {
-    const content = postsList.map(p => `
-    <li>
-        <a class="flex flex-col gap-y-5" href="${showLink(req, p.title)}">
-            <h2 class="text-3xl font-semibold text-blue-500">${p.title}</h2>
-            <p>${p.content}</p>
-            <figure class="w-52 rounded-md overflow-hidden">
-                <img class="w-full h-auto" src="./imgs/posts/${p.image}" alt="${p.title}">
-            </figure>
-            <div>
-                ${p.tags.map(tag => `<span class="odd:text-blue-400 even:text-rose-400">${tag}</span>`).join(' - ')}
-            </div>
-        </a>
-    </li>
-  `).join('');
+    const content = `
+    <div class="container mx-auto py-5">
+        <ul>
+            ${postsList.map(p => `
+            <li>
+                <a class="flex flex-col gap-y-5" href="${showLink(req, p.title)}">
+                    <h2 class="text-3xl font-semibold text-blue-500">${p.title}</h2>
+                    <p>${p.content}</p>
+                    <figure class="w-52 rounded-md overflow-hidden">
+                        <img class="w-full h-auto" src="./imgs/posts/${p.image}" alt="${p.title}">
+                    </figure>
+                    <div>
+                        ${p.tags.map(tag => `<span class="odd:text-blue-400 even:text-rose-400">${tag}</span>`).join(' - ')}
+                    </div>
+                </a>
+            </li>
+            `).join('')}
+        </ul>
+    </div>`;
 
   const mainHtml = html.replace("yield", content);
     res.send(mainHtml);
@@ -34,14 +39,22 @@ const show = (req, res) => {
         html: () => {
             if(targetPost){
                 const {title, content, image, tags} = targetPost;
-                res.send(`
-                    <h1>${title}</h1>
-                    <p>${content}</p>
-                    <img width="200" src="/imgs/posts/${image}" alt="${title}">
-                    <div>
-                        ${tags.map(tag => `<span>${tag}</span>`).join(' - ')}
+                const mainContent = `
+                <div class="container mx-auto py-5">
+                    <div class="flex flex-col gap-y-5">
+                        <h1 class="text-3xl font-semibold text-blue-500">${title}</h1>
+                        <p>${content}</p>
+                        <figure class="w-52 rounded-md overflow-hidden">
+                            <img class="w-full h-auto" width="200" src="/imgs/posts/${image}" alt="${title}">
+                        </figure>
+                        <div>
+                            ${tags.map(tag => `<span class="odd:text-blue-400 even:text-rose-400">${tag}</span>`).join(' - ')}
+                        </div>
                     </div>
-                `)
+                </div>
+                `
+                const mainHtml = html.replace('yield', mainContent);
+                res.send(mainHtml);
             }else{
                 res.status(404).send(`Post: ${param} not found`);
             }
