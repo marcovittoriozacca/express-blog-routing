@@ -19,7 +19,7 @@ const index = (req,res) => {
     html += `</ul>`;
     res.send(html);
 }
-
+//show controller for the route /posts/:slug where :slug is a dynamic parameter passed throug the url
 const show = (req, res) => {
     const param =  req.params.slug;
     
@@ -55,6 +55,7 @@ const show = (req, res) => {
     })
 }
 
+//create controller - at the moment its just displays an h1
 const create = (req, res) => {
     res.format({
         html: () => {
@@ -66,6 +67,7 @@ const create = (req, res) => {
     })
 }
 
+//download route to download the single post image
 const download = (req, res) => {
     const param = req.params.slug;
     const targetPost = postsList.find(post => post.slug.replace('/', '-') === param);
