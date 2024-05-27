@@ -48,7 +48,19 @@ const show = (req, res) => {
     })
 }
 
+const create = (req, res) => {
+    res.format({
+        html: () => {
+            res.send('<h1>Creazione nuovo post</h1>')
+        },
+        default: () => {
+            res.status(406).send('Error 406 - Not Acceptable')
+        }
+    })
+}
+
 module.exports = {
     index,
-    show
+    show,
+    create
 }

@@ -8,5 +8,7 @@ router.get('/', posts.index);
 
 router.get('/:slug', posts.show);
 
+router.post('/create', posts.create);
+
 
 module.exports = router;
