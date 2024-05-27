@@ -1,26 +1,29 @@
 const postsList = require('../database/db.js');
 const path = require('path');
 const fs = require('fs');
-const {showLink} = require('../utils.js');
+const {showLink, getTemplate} = require('../utils.js');
 //index controller for the route /posts
-const index = (req,res) => {
-    let html;
 
-    html = `<ul>`;
-    postsList.forEach(p => { 
-        html+= `<li>
-                    <a style="text-decoration:none" href="${showLink(req, p.title)}">
-                        <h2>${p.title}</h2>
-                        <p>${p.content}</p>
-                        <img width="200" src="./imgs/posts/${p.image}" alt="${p.title}">
-                        <div>
-                        ${p.tags.map(tag => `<span>${tag}</span>`).join(' - ')}
-                        </div>
-                    </a>
-                </li>`
-    });
-    html += `</ul>`;
-    res.send(html);
+let html = getTemplate('template');
+
+const index = (req,res) => {
+    const content = postsList.map(p => `
+    <li>
+        <a class="flex flex-col gap-y-5" href="${showLink(req, p.title)}">
+            <h2 class="text-3xl font-semibold text-blue-500">${p.title}</h2>
+            <p>${p.content}</p>
+            <figure class="w-52 rounded-md overflow-hidden">
+                <img class="w-full h-auto" src="./imgs/posts/${p.image}" alt="${p.title}">
+            </figure>
+            <div>
+                ${p.tags.map(tag => `<span class="odd:text-blue-400 even:text-rose-400">${tag}</span>`).join(' - ')}
+            </div>
+        </a>
+    </li>
+  `).join('');
+
+  const mainHtml = html.replace("yield", content);
+    res.send(mainHtml);
 }
 //show controller for the route /posts/:slug where :slug is a dynamic parameter passed throug the url
 const show = (req, res) => {
