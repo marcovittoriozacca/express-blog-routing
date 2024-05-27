@@ -10,5 +10,7 @@ router.get('/:slug', posts.show);
 
 router.post('/create', posts.create);
 
+router.get('/:slug/download', posts.download);
+
 
 module.exports = router;

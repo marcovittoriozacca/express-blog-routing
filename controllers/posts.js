@@ -1,4 +1,6 @@
 const postsList = require('../database/db.js');
+const path = require('path');
+const fs = require('fs');
 //index controller for the route /posts
 const index = (req,res) => {
     let html;
@@ -59,8 +61,25 @@ const create = (req, res) => {
     })
 }
 
+const download = (req, res) => {
+    const param = req.params.slug;
+    const targetPost = postsList.find(post => post.slug.replace('/', '-') === param);
+    if(targetPost){
+        const imagePath = path.join(__dirname, '../public/imgs/posts/', `${targetPost.image}`);
+    
+        if(fs.existsSync(imagePath)){
+            res.download(imagePath)
+        }else{
+            res.status(404).send(`Error 404 - The image ${targetPost.image} doesn't exist`)
+        }
+    }else{
+        res.status(404).send(`Error 404 - Post: ${param} doesn't exist`)
+    }
+
+}
 module.exports = {
     index,
     show,
-    create
+    create,
+    download
 }
